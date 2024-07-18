@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour
@@ -10,15 +11,13 @@ public class PlayerController : MonoBehaviour
     public GameObject clone;
     public GameObject spawn;
     bool grounded;
-    float speedMovement = 30f;
+    float speedMovement = 12f;
     float speedRotation = 110f;
     float gravity = 60f;
-    float jumpForce = 20f;
+    float jumpForce = 25f;
     Vector3 jumpVector = Vector3.zero;
     CharacterController cc;
-
     bool wasGrounded;
-    public bool inPuddle;
 
     private void Awake()
     {
@@ -33,10 +32,21 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        LayerMask mask = LayerMask.GetMask("Jumpable");
+        LayerMask jumpableMask = LayerMask.GetMask("Jumpable");
+        LayerMask waterMask = LayerMask.GetMask("Water");
         wasGrounded = grounded;
 
-        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, mask))
+        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, waterMask))
+        {
+            AudioManager.Instance.PlayDamage();
+            Respawn(1);
+        }
+
+        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, jumpableMask) || 
+            Physics.Raycast(new Vector3(transform.position.x + 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.9f, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x - 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.9f, jumpableMask) || 
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.65f), Vector3.down, 0.9f, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.65f), Vector3.down, 0.9f, jumpableMask) )
         {
             grounded = true;
         }
@@ -49,12 +59,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)) 
         {
             AudioManager.Instance.PlayClone();
-            Respawn(true);
+            Respawn(2);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Respawn(false);
+            Respawn(3);
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -64,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S))
         {
-            cc.Move(-speedMovement * Time.deltaTime * transform.forward);
+            cc.Move(- speedMovement * Time.deltaTime * transform.forward);
         }
 
         if (Input.GetKey(KeyCode.D))
@@ -80,66 +90,47 @@ public class PlayerController : MonoBehaviour
         {
             grounded = false;
             jumpVector.y = jumpForce;
-
-            if (inPuddle)
-            {
-                AudioManager.Instance.PlayJump();
-            }
-
-            else
-            {
-                AudioManager.Instance.PlayJumpPlastic();
-            }
+            AudioManager.Instance.PlayJumpPlastic();
+            AudioManager.Instance.PlayJump();
         }
-
         jumpVector.y -= gravity * Time.deltaTime;
         cc.Move(jumpVector * Time.deltaTime);
     }
 
-    void Respawn(bool cloner)
+    void Respawn(int typeRespawn)
     {
-        if (cloner is false)
+        switch(typeRespawn)
         {
-            cc.enabled = false;
-            while(cloneQueue.Count>0)
-            {
-                Destroy(cloneQueue.Dequeue());
-            }
-            transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
-            cc.enabled = true;
-        }
-        if (cloner is true)
-        {
-            cc.enabled = false;
-            if (cloneQueue.Count < 10)
-            {
-                cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
-            }
-            else
-            {
-                Destroy(cloneQueue.Dequeue());
-                cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
-            }
-            transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
-            cc.enabled = true;
-        }
+            case 1:
+                cc.enabled = false;
+                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                cc.enabled = true;
+            break;
 
-    }
+            case 2:
+                cc.enabled = false;
+                if (cloneQueue.Count < 10)
+                {
+                    cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+                }
+                else
+                {
+                    Destroy(cloneQueue.Dequeue());
+                    cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+                }
+                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                cc.enabled = true;
+            break;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag is "Puddle")
-        {
-            inPuddle = true;
-            AudioManager.Instance.PlayDamage();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag is "Puddle")
-        {
-            inPuddle = false;
+            case 3:
+                cc.enabled = false;
+                while (cloneQueue.Count > 0)
+                {
+                    Destroy(cloneQueue.Dequeue());
+                }
+                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                cc.enabled = true;
+            break;
         }
     }
 }
