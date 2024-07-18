@@ -6,6 +6,7 @@ using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour
 {
+    public Queue<GameObject> cloneQueue = new Queue<GameObject>();
     public GameObject clone;
     public GameObject spawn;
     bool grounded;
@@ -81,13 +82,25 @@ public class PlayerController : MonoBehaviour
         if (cloner == false)
         {
             cc.enabled = false;
+            while(cloneQueue.Count>0)
+            {
+                Destroy(cloneQueue.Dequeue());
+            }
             transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
             cc.enabled = true;
         }
         if (cloner == true)
         {
             cc.enabled = false;
-            Instantiate(clone,transform.position,Quaternion.identity);
+            if (cloneQueue.Count < 10)
+            {
+                cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+            }
+            else
+            {
+                Destroy(cloneQueue.Dequeue());
+                cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+            }
             transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
             cc.enabled = true;
         }
