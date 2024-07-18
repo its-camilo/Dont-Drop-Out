@@ -21,7 +21,7 @@ public class LoadLevel : MonoBehaviour
 
         while (!operation.isDone)
         {
-            progressBar.rectTransform.localScale = new Vector3(1f, operation.progress, 1f);
+            progressBar.fillAmount = operation.progress;
             yield return new WaitForEndOfFrame();
         }
     }
