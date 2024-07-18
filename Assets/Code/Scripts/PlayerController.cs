@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     Vector3 jumpVector = Vector3.zero;
     CharacterController cc;
 
+    bool wasGrounded;
+    public bool inPuddle;
+
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -28,18 +31,24 @@ public class PlayerController : MonoBehaviour
         transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0,1,0,1));
     }
 
-    // Update is called once per frame
     void Update()
     {
         LayerMask mask = LayerMask.GetMask("Jumpable");
+        wasGrounded = grounded;
 
         if (Physics.Raycast(transform.position, Vector3.down, 0.9f, mask))
         {
             grounded = true;
         }
 
+        if (grounded && !wasGrounded)
+        {
+            AudioManager.Instance.PlayFall();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q)) 
         {
+            AudioManager.Instance.PlayClone();
             Respawn(true);
         }
 
@@ -67,10 +76,20 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(speedRotation * Time.deltaTime * Vector3.down);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded == true)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded is true)
         {
             grounded = false;
             jumpVector.y = jumpForce;
+
+            if (inPuddle)
+            {
+                AudioManager.Instance.PlayJump();
+            }
+
+            else
+            {
+                AudioManager.Instance.PlayJumpPlastic();
+            }
         }
 
         jumpVector.y -= gravity * Time.deltaTime;
@@ -79,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     void Respawn(bool cloner)
     {
-        if (cloner == false)
+        if (cloner is false)
         {
             cc.enabled = false;
             while(cloneQueue.Count>0)
@@ -89,7 +108,7 @@ public class PlayerController : MonoBehaviour
             transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
             cc.enabled = true;
         }
-        if (cloner == true)
+        if (cloner is true)
         {
             cc.enabled = false;
             if (cloneQueue.Count < 10)
@@ -105,5 +124,22 @@ public class PlayerController : MonoBehaviour
             cc.enabled = true;
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag is "Puddle")
+        {
+            inPuddle = true;
+            AudioManager.Instance.PlayDamage();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag is "Puddle")
+        {
+            inPuddle = false;
+        }
     }
 }
