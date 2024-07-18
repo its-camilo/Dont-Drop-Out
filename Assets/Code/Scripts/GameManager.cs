@@ -27,4 +27,10 @@ public class GameManager : MonoBehaviour
     {
         //
     }
+
+    public bool IsPaused
+    {
+        get;
+        set;
+    }
 }
