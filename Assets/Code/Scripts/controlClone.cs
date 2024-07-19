@@ -23,10 +23,10 @@ public class controlClone : MonoBehaviour
         wasGrounded = grounded;
 
         if (Physics.Raycast(transform.position, Vector3.down, ray_length, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x + 0.65f, transform.position.y, transform.position.z), Vector3.down, ray_length, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x - 0.65f, transform.position.y, transform.position.z), Vector3.down, ray_length, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.65f), Vector3.down, ray_length, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.65f), Vector3.down, ray_length, jumpableMask)
+            Physics.Raycast(new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z), Vector3.down, ray_length, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x - 1f, transform.position.y, transform.position.z), Vector3.down, ray_length, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 1f), Vector3.down, ray_length, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 1f), Vector3.down, ray_length, jumpableMask)
             )
         {
             grounded = true;
