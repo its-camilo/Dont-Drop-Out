@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4647160748325204219}
   - component: {fileID: 1979560223799685030}
   m_Layer: 6
-  m_Name: blopClone
+  m_Name: blopCubeClone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

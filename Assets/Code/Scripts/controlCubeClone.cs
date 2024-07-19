@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class controlClone : MonoBehaviour
+public class controlCubeClone : MonoBehaviour
 {
     public float ray_length = 0.5f;
     bool grounded;

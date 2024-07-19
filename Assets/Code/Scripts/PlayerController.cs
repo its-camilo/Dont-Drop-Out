@@ -7,8 +7,10 @@ using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour
 {
+
     public Queue<GameObject> cloneQueue = new Queue<GameObject>();
-    public GameObject clone;
+    public GameObject cubeClone;
+    public GameObject puddleClone;
     public GameObject spawn;
     bool grounded;
     float speedMovement = 12f;
@@ -76,8 +78,13 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            AudioManager.Instance.PlayUnclone();
+            AudioManager.Instance.PlayClone();
             Respawn(3);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            AudioManager.Instance.PlayUnclone();
+            Respawn(4);
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -111,39 +118,48 @@ public class PlayerController : MonoBehaviour
 
     void Respawn(int typeRespawn)
     {
-        switch(typeRespawn)
+        cc.enabled = false;
+        switch (typeRespawn)
         {
             case 1:
-                cc.enabled = false;
                 transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-                cc.enabled = true;
             break;
 
             case 2:
-                cc.enabled = false;
                 if (cloneQueue.Count < 10)
                 {
-                    cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+                    cloneQueue.Enqueue(Instantiate(cubeClone, transform.position, Quaternion.identity));
                 }
                 else
                 {
                     Destroy(cloneQueue.Dequeue());
-                    cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
+                    cloneQueue.Enqueue(Instantiate(cubeClone, transform.position, Quaternion.identity));
                 }
                 transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-                cc.enabled = true;
             break;
 
             case 3:
-                cc.enabled = false;
+                if (cloneQueue.Count < 10)
+                {
+                    cloneQueue.Enqueue(Instantiate(puddleClone, transform.position, Quaternion.identity));
+                }
+                else
+                {
+                    Destroy(cloneQueue.Dequeue());
+                    cloneQueue.Enqueue(Instantiate(puddleClone, transform.position, Quaternion.identity));
+                }
+                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+                break;
+
+            case 4:
                 while (cloneQueue.Count > 0)
                 {
                     Destroy(cloneQueue.Dequeue());
                 }
                 transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-                cc.enabled = true;
             break;
         }
+        cc.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
