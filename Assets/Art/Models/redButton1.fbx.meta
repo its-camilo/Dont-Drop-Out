@@ -3,7 +3,17 @@ guid: bb020e87672364273bf4e56aae355727
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RedButton1
+    second: {fileID: 2100000, guid: c046521c46b33d51bb96afd96f949f15, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: RedButton1
+    second: {fileID: 2800000, guid: 8a32ca851b0d85c82ae7277ef421be9f, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

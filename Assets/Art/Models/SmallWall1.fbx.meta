@@ -3,7 +3,17 @@ guid: 5fb81958f413de530b086ee4ce5f3ca7
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SmallMall1
+    second: {fileID: 2100000, guid: 7d51805b9f2e505019510d6a1af24f9e, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: SmallWall1
+    second: {fileID: 2800000, guid: be5b076d916608e2d819f17041c6a53d, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
