@@ -294,8 +294,8 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
+  m_ShowToolkit: 1
+  m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
@@ -310,15 +310,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.492884
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -22.055565
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalRotation.w
@@ -330,11 +330,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -419,6 +419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clone: {fileID: 7203378255063131881, guid: 33d05e00351448e45b51271f4d6bd279, type: 3}
   spawn: {fileID: 0}
+  ray_length: 1
 --- !u!136 &5876590705442386480
 CapsuleCollider:
   m_ObjectHideFlags: 0
