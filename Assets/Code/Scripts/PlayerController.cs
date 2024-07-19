@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public Queue<GameObject> cloneQueue = new Queue<GameObject>();
     public GameObject clone;
     public GameObject spawn;
-    public GameObject checkpoint;
     bool grounded;
     float speedMovement = 12f;
     float speedRotation = 110f;
@@ -61,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.9f, checkpointMask))
         {
-            spawn.transform.SetPositionAndRotation(new Vector3(hit.transform.position.x, hit.transform.position.y + 2f, hit.transform.position.z), checkpoint.transform.rotation);
+            spawn.transform.SetPositionAndRotation(new Vector3(hit.transform.position.x, hit.transform.position.y + 2f, hit.transform.position.z), hit.transform.rotation);
         }
 
         if (grounded && !wasGrounded)
