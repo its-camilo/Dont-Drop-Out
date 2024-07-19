@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0,1,0,1));
+        transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
     }
 
     void Update()
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
         {
             case 1:
                 cc.enabled = false;
-                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                 cc.enabled = true;
             break;
 
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
                     Destroy(cloneQueue.Dequeue());
                     cloneQueue.Enqueue(Instantiate(clone, transform.position, Quaternion.identity));
                 }
-                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                 cc.enabled = true;
             break;
 
@@ -129,9 +129,14 @@ public class PlayerController : MonoBehaviour
                 {
                     Destroy(cloneQueue.Dequeue());
                 }
-                transform.SetPositionAndRotation(spawn.transform.position, new Quaternion(0, 1, 0, 1));
+                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                 cc.enabled = true;
             break;
         }
     }
 }
+/*
+  raycast que verifique el checkpoint
+  spawn.transform.position = botellita.transform.position;
+  transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+ */
