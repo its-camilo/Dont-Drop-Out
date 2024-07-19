@@ -29,6 +29,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource clone;
     [SerializeField] private AudioSource damage1, damage2;
     [SerializeField] private AudioSource jump, jumpPlastic;
+    [SerializeField] private AudioSource unclone;
 
     public void PlayMusic()
     {
@@ -66,5 +67,10 @@ public class AudioManager : MonoBehaviour
     public void PlayJumpPlastic()
     {
         jumpPlastic.Play();
+    }
+
+    public void PlayUnclone()
+    {
+        unclone.Play();
     }
 }

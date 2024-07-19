@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            AudioManager.Instance.PlayUnclone();
             Respawn(3);
         }
 
