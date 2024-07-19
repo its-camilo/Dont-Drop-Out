@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class controlClone : MonoBehaviour
 {
-    public float ray_length = 1f;
+    public float ray_length = 0.5f;
     bool grounded;
     bool wasGrounded;
     

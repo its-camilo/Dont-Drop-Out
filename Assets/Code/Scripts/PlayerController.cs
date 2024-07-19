@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour
     public Queue<GameObject> cloneQueue = new Queue<GameObject>();
     public GameObject clone;
     public GameObject spawn;
+    public GameObject checkpoint;
     bool grounded;
     float speedMovement = 12f;
     float speedRotation = 110f;
-    float gravity = 60f;
-    float jumpForce = 25f;
+    float gravity = 40f;
+    float jumpForce = 20f;
     Vector3 jumpVector = Vector3.zero;
     CharacterController cc;
     bool wasGrounded;
@@ -33,7 +34,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        LayerMask jumpableMask = LayerMask.GetMask("Jumpable");
+        LayerMask jumpableMask = LayerMask.GetMask("Jumpable", "checkpoint");
+        LayerMask checkpointMask = LayerMask.GetMask("checkpoint");
         LayerMask waterMask = LayerMask.GetMask("Water");
         wasGrounded = grounded;
 
@@ -43,13 +45,23 @@ public class PlayerController : MonoBehaviour
             Respawn(1);
         }
 
-        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, jumpableMask) || 
-            Physics.Raycast(new Vector3(transform.position.x + 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.9f, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x - 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.9f, jumpableMask) || 
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.65f), Vector3.down, 0.9f, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.65f), Vector3.down, 0.9f, jumpableMask) )
+        if (Physics.Raycast(transform.position, Vector3.down, 0.35f, jumpableMask) || 
+            Physics.Raycast(new Vector3(transform.position.x + 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.35f, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x - 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.35f, jumpableMask) || 
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.65f), Vector3.down, 0.35f, jumpableMask) ||
+            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.65f), Vector3.down, 0.35f, jumpableMask) )
         {
+            jumpVector.y = 0;
             grounded = true;
+        }
+        else
+        {
+            grounded=false;
+        }
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.9f, checkpointMask))
+        {
+            spawn.transform.SetPositionAndRotation(new Vector3(hit.transform.position.x, hit.transform.position.y + 2f, hit.transform.position.z), checkpoint.transform.rotation);
         }
 
         if (grounded && !wasGrounded)
@@ -62,7 +74,6 @@ public class PlayerController : MonoBehaviour
             AudioManager.Instance.PlayClone();
             Respawn(2);
         }
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             AudioManager.Instance.PlayUnclone();
@@ -73,7 +84,6 @@ public class PlayerController : MonoBehaviour
         {
             cc.Move(speedMovement * Time.deltaTime * transform.forward);
         }
-
         if (Input.GetKey(KeyCode.S))
         {
             cc.Move(- speedMovement * Time.deltaTime * transform.forward);
@@ -93,8 +103,8 @@ public class PlayerController : MonoBehaviour
             grounded = false;
             jumpVector.y = jumpForce;
             AudioManager.Instance.PlayJumpPlastic();
-            AudioManager.Instance.PlayJump();
         }
+
         jumpVector.y -= gravity * Time.deltaTime;
         cc.Move(jumpVector * Time.deltaTime);
     }
@@ -144,8 +154,3 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-/*
-  raycast que verifique el checkpoint
-  spawn.transform.position = botellita.transform.position;
-  transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
- */
