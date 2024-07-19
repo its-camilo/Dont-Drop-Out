@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     Vector3 jumpVector = Vector3.zero;
     CharacterController cc;
     bool wasGrounded;
+    [SerializeField] private PassLevel passLevel;
 
     private void Awake()
     {
@@ -132,6 +133,14 @@ public class PlayerController : MonoBehaviour
                 transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
                 cc.enabled = true;
             break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag is "Finish")
+        {
+            passLevel.FinishLevel();
         }
     }
 }

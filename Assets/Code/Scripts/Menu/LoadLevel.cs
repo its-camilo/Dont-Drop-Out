@@ -17,7 +17,7 @@ public class LoadLevel : MonoBehaviour
     {
         yield return null;
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync("Main");
+        AsyncOperation operation = SceneManager.LoadSceneAsync("Level1");
 
         while (!operation.isDone)
         {
