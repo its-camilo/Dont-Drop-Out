@@ -2603,6 +2603,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 5876590705442386480, guid: e06e4685399870715a255bba0873f661, type: 3}
       propertyPath: m_Height
       value: 1.8106575
@@ -2610,6 +2611,11 @@ PrefabInstance:
     - target: {fileID: 5876590705442386480, guid: e06e4685399870715a255bba0873f661, type: 3}
       propertyPath: m_Radius
       value: 0.90532875
+=======
+    - target: {fileID: 76304008237214858, guid: e06e4685399870715a255bba0873f661, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 5907750428713139977, guid: e06e4685399870715a255bba0873f661, type: 3}
       propertyPath: m_Name
@@ -2620,9 +2626,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1356212507}
     - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
+<<<<<<< Updated upstream
       propertyPath: dialogue
       value: 
       objectReference: {fileID: 1064352520}
+=======
+      propertyPath: cubeClone
+      value: 
+      objectReference: {fileID: 7203378255063131881, guid: 33d05e00351448e45b51271f4d6bd279, type: 3}
+    - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
+      propertyPath: puddleClone
+      value: 
+      objectReference: {fileID: 7203378255063131881, guid: 8b289beebb6306d41b01da361e406de1, type: 3}
+>>>>>>> Stashed changes
     - target: {fileID: 6536793552581289395, guid: e06e4685399870715a255bba0873f661, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.99
