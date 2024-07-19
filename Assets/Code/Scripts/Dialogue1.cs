@@ -17,7 +17,7 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && lineIndex != 8 && lineIndex != 12 && lineIndex != 16)
+        if (Input.GetMouseButtonDown(0) && lineIndex != 8 && lineIndex != 12 && lineIndex != 16 && lineIndex != 19 && lineIndex != 20 && lineIndex != 22)
         {
             if (dialogueText.text == dialogueLines[lineIndex])
             {
@@ -40,6 +40,11 @@ public class Dialogue : MonoBehaviour
         {
             SpecificDialogue(13);
         }
+
+        if (lineIndex == 19 && Input.GetKeyDown(KeyCode.Q))
+        {
+            SpecificDialogue(20);
+        }
     }
 
     private void StartDialogue()
@@ -48,7 +53,7 @@ public class Dialogue : MonoBehaviour
         StartCoroutine(WriteLine());
     }
 
-    private void SpecificDialogue(int dialogue)
+    public void SpecificDialogue(int dialogue)
     {
         lineIndex = dialogue;
         StartCoroutine(WriteLine());

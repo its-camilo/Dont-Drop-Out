@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     CharacterController cc;
     bool wasGrounded;
     [SerializeField] private PassLevel passLevel;
+    [SerializeField] private Dialogue dialogue;
 
     private void Awake()
     {
@@ -150,6 +151,16 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag is "Finish")
         {
             passLevel.FinishLevel();
+        }
+
+        if (other.gameObject.tag is "DialogueObject")
+        {
+            int objectNameAsInt;
+            if (int.TryParse(other.gameObject.name, out objectNameAsInt))
+            {
+                dialogue.SpecificDialogue(objectNameAsInt);
+            }
+            Destroy(other.gameObject);
         }
     }
 }
