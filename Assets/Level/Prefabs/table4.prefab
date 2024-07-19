@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: water2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b5867c9a6bf42d468a8af0e31c888a51, type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

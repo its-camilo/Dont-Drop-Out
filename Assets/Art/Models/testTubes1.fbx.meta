@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed6e03894c5de103683dbfb9cb52d04c
+guid: 8324e2e8f9334b6529891bfc59e85232
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
+      name: TestTubes1
+    second: {fileID: 2100000, guid: b64c11161a3faf49fba76809508f2527, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: TestTubes1
+    second: {fileID: 2800000, guid: d7ffa6787da4d0b0693f65f0f8f524e5, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

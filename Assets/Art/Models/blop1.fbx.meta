@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed6e03894c5de103683dbfb9cb52d04c
+guid: 225e5c73bcc3f434ebc8fe01f7e4fc57
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
+      name: Blop1
+    second: {fileID: 2100000, guid: c0594af659dc2c02c8ac86712212ea66, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Blop1
+    second: {fileID: 2800000, guid: 550e83eae6430dfc198df2f18a271d0a, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6097070856305192963}
   - component: {fileID: 3600744024775409337}
   - component: {fileID: 6220788698148530621}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: puddle2
-  m_TagString: Untagged
+  m_TagString: Puddle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8559731736929697333, guid: ed6e03894c5de103683dbfb9cb52d04c, type: 3}
+  - {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

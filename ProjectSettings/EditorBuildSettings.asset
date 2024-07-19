@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Level/Scenes/Menu/LoadingScreen.unity
     guid: fa64160fe8ce6394b83749569bc4d7ce
   - enabled: 1
+    path: Assets/Level/Scenes/Level1.unity
+    guid: 922838f5e4d60e54383f3f2be9a60f3a
+  - enabled: 1
     path: Assets/Level/Scenes/Camilo.unity
     guid: bed29ce7cb6a62948aae260d195fdfe7
   m_configObjects: {}

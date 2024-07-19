@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed6e03894c5de103683dbfb9cb52d04c
+guid: 60f84a2de301659ce9e3d23e99e9e162
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
+      name: Rail1
+    second: {fileID: 2100000, guid: db6b5897c858b6d389d5fc13062fe28a, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Rail1
+    second: {fileID: 2800000, guid: 677f9b0b1c3d121d2a4c22b180355e46, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed6e03894c5de103683dbfb9cb52d04c
+guid: d83a2fd71ead0adbd9da22de8ec2d83d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
+      name: Material.003
+    second: {fileID: 2100000, guid: 4d5e7758128aae000a49e7f98a8eeb84, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: SBM
+    second: {fileID: 2800000, guid: ea9c56fffeda1a9e0ae9587c87c72147, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

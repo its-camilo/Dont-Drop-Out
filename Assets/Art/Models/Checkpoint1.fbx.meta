@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ed6e03894c5de103683dbfb9cb52d04c
+guid: 97f1c7c6634533a5ab267cb6c1de9f1f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: d88fefee779ee9693808d8663f0e8ced, type: 2}
+      name: Checkpoint1
+    second: {fileID: 2100000, guid: 150b70b75a965c1f4b881c02ce8d3c5c, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Checkpoint-alpha
+    second: {fileID: 2800000, guid: 7220daa5c35200ce19d7a49728f9a73b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Checkpoint1
+    second: {fileID: 2800000, guid: 0ff04f18733f03c659baab64fcaab512, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
