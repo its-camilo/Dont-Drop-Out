@@ -3,7 +3,17 @@ guid: 100a1927282b63ad48f3d10eb3e35140
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BrokenPipe1
+    second: {fileID: 2100000, guid: 2ca26e7ac1f146c9a85a3fca62c7d43f, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: BrokenPipe1
+    second: {fileID: 2800000, guid: 1c06698b80759125489e6676b470d0f9, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
