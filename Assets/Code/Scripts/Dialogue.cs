@@ -52,7 +52,7 @@ public class Dialogue : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Level2")
         {
-            if (Input.GetMouseButtonDown(0) && lineIndex != 3 && lineIndex != 6)
+            if (Input.GetMouseButtonDown(0) && lineIndex != 3 && lineIndex != 6 && lineIndex != 8 && lineIndex != 9)
             {
                 if (dialogueText.text == dialogueLines[lineIndex])
                 {
@@ -64,6 +64,11 @@ public class Dialogue : MonoBehaviour
                     StopAllCoroutines();
                     dialogueText.text = dialogueLines[lineIndex];
                 }
+            }
+
+            if (lineIndex == 8 && Input.GetKeyDown(KeyCode.E))
+            {
+                SpecificDialogue(9);
             }
         }
     }
