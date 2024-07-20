@@ -22,6 +22,7 @@ public class Dialogue : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Level1")
         {
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 if (dialogueText.text == dialogueLines[lineIndex])
                 {
@@ -38,6 +39,7 @@ public class Dialogue : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Level2")
         {
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 if (dialogueText.text == dialogueLines[lineIndex])
                 {
@@ -67,6 +69,7 @@ public class Dialogue : MonoBehaviour
             }
         }
     }
+
     private void StartDialogue()
     {
         lineIndex = 0;
