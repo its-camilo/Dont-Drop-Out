@@ -122,11 +122,6 @@ public class PlayerController : MonoBehaviour
 
         jumpVector.y -= gravity * Time.deltaTime;
         cc.Move(jumpVector * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.E) && inButton)
-        {
-            dialogue.SpecificDialogue(3);
-        }
     }
 
     void Respawn(int typeRespawn)
@@ -194,7 +189,6 @@ public class PlayerController : MonoBehaviour
                 rejillas.SetActive(true);            
             }
         }
-
         if (SceneManager.GetActiveScene().name == "Level3")
         {
             string objectNameAsString = other.gameObject.name;
