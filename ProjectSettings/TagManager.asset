@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Puddle
   - DialogueObject
+  - FinJuego
   layers:
   - Default
   - TransparentFX

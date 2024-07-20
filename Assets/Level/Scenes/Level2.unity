@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: voidDoor (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6552518029827586728, guid: 5f00cc6fa25d66547b0fa4545434a6d1, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3321,6 +3325,10 @@ MonoBehaviour:
     clonarse] para que Blop pueda clonarse
   - 'Huesos:  Excelente'
   - 'Huesos:  Excelente, ten cuidado con que se te metan las pulgas'
+  dialogueBlop: {fileID: 0}
+  dialogueHuesos: {fileID: 0}
+  blop: {fileID: 0}
+  huesos: {fileID: 0}
 --- !u!1 &1074405233 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5907750428713139977, guid: e06e4685399870715a255bba0873f661, type: 3}
