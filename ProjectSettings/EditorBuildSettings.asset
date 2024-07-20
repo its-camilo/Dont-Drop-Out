@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Level/Scenes/Level2.unity
     guid: 6a0b1961a0e7f41429137d428033ebea
   - enabled: 1
-    path: Assets/Level/Scenes/Camilo.unity
-    guid: bed29ce7cb6a62948aae260d195fdfe7
+    path: Assets/Level/Scenes/Level3.unity
+    guid: 663e7d3d35536934eb839f1602970034
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

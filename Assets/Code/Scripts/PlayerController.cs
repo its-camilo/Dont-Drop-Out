@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PassLevel passLevel;
     [SerializeField] private Dialogue dialogue;
     [SerializeField] private GameObject rejillas;
+    private bool inButton;
 
     private void Awake()
     {
@@ -121,6 +122,11 @@ public class PlayerController : MonoBehaviour
 
         jumpVector.y -= gravity * Time.deltaTime;
         cc.Move(jumpVector * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.E) && inButton)
+        {
+            dialogue.SpecificDialogue(3);
+        }
     }
 
     void Respawn(int typeRespawn)
@@ -192,6 +198,15 @@ public class PlayerController : MonoBehaviour
             if (objectNameAsString == "redButton1")
             {
                 rejillas.SetActive(false);
+            }
+        }
+
+        if (SceneManager.GetActiveScene().name == "Level3")
+        {
+            string objectNameAsString = other.gameObject.name;
+            if (objectNameAsString == "redButton1")
+            {
+                inButton = true;
             }
         }
     }
