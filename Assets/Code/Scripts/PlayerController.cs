@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.VFX;
+using UnityEngine.SceneManagement;
+using System.Data.SqlTypes;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     bool wasGrounded;
     [SerializeField] private PassLevel passLevel;
     [SerializeField] private Dialogue dialogue;
+    [SerializeField] private GameObject rejillas;
 
     private void Awake()
     {
@@ -36,6 +39,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (SceneManager.GetActiveScene().name != "Level2")
+        {
+            rejillas = null;
+        }
         LayerMask jumpableMask = LayerMask.GetMask("Jumpable", "checkpoint");
         LayerMask checkpointMask = LayerMask.GetMask("checkpoint");
         LayerMask waterMask = LayerMask.GetMask("Water");
@@ -177,6 +184,15 @@ public class PlayerController : MonoBehaviour
                 dialogue.SpecificDialogue(objectNameAsInt);
             }
             Destroy(other.gameObject);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            string objectNameAsString = other.gameObject.name;
+            if (objectNameAsString == "redButton1")
+            {
+                rejillas.SetActive(false);
+            }
         }
     }
 }
