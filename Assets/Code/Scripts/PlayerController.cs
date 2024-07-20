@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Dialogue dialogue;
     [SerializeField] private GameObject rejillas;
     private bool inButton;
+    public GameObject finjuego;
 
     private void Awake()
     {
@@ -175,6 +176,11 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag is "Finish")
         {
             passLevel.FinishLevel();
+        }
+
+        if (other.gameObject.tag is "FinJuego" && SceneManager.GetActiveScene().name == "Level2")
+        {
+            finjuego.SetActive(true);
         }
 
         if (SceneManager.GetActiveScene().name == "Level2")
