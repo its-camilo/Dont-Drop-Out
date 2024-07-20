@@ -7,6 +7,8 @@ TagManager:
   - Puddle
   - DialogueObject
   - FinJuego
+  - Clone
+  - ClonePuddle
   layers:
   - Default
   - TransparentFX

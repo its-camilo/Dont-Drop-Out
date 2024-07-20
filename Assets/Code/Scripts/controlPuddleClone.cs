@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class controlPuddleClone : MonoBehaviour
 {
     public float ray_length = 0.5f;
     bool grounded;
     bool wasGrounded;
-
     private SkinnedMeshRenderer smr;
     private bool isBlendshapeChanging = false;
 
@@ -18,6 +18,7 @@ public class controlPuddleClone : MonoBehaviour
 
     void Update()
     {
+        LayerMask buttonMask = LayerMask.GetMask("button");
         LayerMask jumpableMask = LayerMask.GetMask("Jumpable","button");
         LayerMask waterMask = LayerMask.GetMask("Water");
         wasGrounded = grounded;

@@ -685,6 +685,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2382806156962209310, guid: 38722fa7f39049dbe831ad3b95134cf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1227727461}
+    - targetCorrespondingSourceObject: {fileID: 2382806156962209310, guid: 38722fa7f39049dbe831ad3b95134cf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1227727465}
   m_SourcePrefab: {fileID: 100100000, guid: 38722fa7f39049dbe831ad3b95134cf1, type: 3}
 --- !u!1 &117890409
 GameObject:
@@ -4758,6 +4761,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.375, y: 0.05000001, z: 0.375}
   m_Center: {x: 0, y: 0.064997084, z: 0}
+--- !u!114 &1227727465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227727456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225f4f82399492b42a7797bcf6ec3a26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rejillas: {fileID: 1040951524}
 --- !u!1001 &1314998334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5022,7 +5038,7 @@ Transform:
   m_GameObject: {fileID: 1356212507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.32, y: 13.95, z: 54.54}
+  m_LocalPosition: {x: -98.5, y: 18.72, z: 144.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

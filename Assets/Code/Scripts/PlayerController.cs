@@ -9,11 +9,11 @@ using System.Data.SqlTypes;
 
 public class PlayerController : MonoBehaviour
 {
-
     public Queue<GameObject> cloneQueue = new Queue<GameObject>();
     public GameObject cubeClone;
     public GameObject puddleClone;
     public GameObject spawn;
+    public GameObject rejillas;
     bool grounded;
     float speedMovement = 12f;
     float speedRotation = 110f;
@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     bool wasGrounded;
     [SerializeField] private PassLevel passLevel;
     [SerializeField] private Dialogue dialogue;
-    [SerializeField] private GameObject rejillas;
     private bool inButton;
     public GameObject finjuego;
 
@@ -41,10 +40,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().name != "Level2")
-        {
-            rejillas = null;
-        }
         LayerMask jumpableMask = LayerMask.GetMask("Jumpable", "checkpoint");
         LayerMask checkpointMask = LayerMask.GetMask("checkpoint");
         LayerMask waterMask = LayerMask.GetMask("Water");
@@ -181,19 +176,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag is "FinJuego" && SceneManager.GetActiveScene().name == "Level2")
         {
             finjuego.SetActive(true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Level2")
-        {
-            string objectNameAsString = other.gameObject.name;
-            if (objectNameAsString == "redButton1")
-            {
-                rejillas.SetActive(false);
-            }
-            else 
-            {
-                rejillas.SetActive(true);            
-            }
         }
         if (SceneManager.GetActiveScene().name == "Level3")
         {
