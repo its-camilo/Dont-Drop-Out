@@ -18,7 +18,7 @@ public class controlPuddleClone : MonoBehaviour
 
     void Update()
     {
-        LayerMask jumpableMask = LayerMask.GetMask("Jumpable");
+        LayerMask jumpableMask = LayerMask.GetMask("Jumpable","button");
         LayerMask waterMask = LayerMask.GetMask("Water");
         wasGrounded = grounded;
 

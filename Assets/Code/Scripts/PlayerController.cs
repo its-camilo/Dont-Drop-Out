@@ -182,22 +182,16 @@ public class PlayerController : MonoBehaviour
             passLevel.FinishLevel();
         }
 
-        if (other.gameObject.tag is "DialogueObject")
-        {
-            int objectNameAsInt;
-            if (int.TryParse(other.gameObject.name, out objectNameAsInt))
-            {
-                dialogue.SpecificDialogue(objectNameAsInt);
-            }
-            Destroy(other.gameObject);
-        }
-
         if (SceneManager.GetActiveScene().name == "Level2")
         {
             string objectNameAsString = other.gameObject.name;
             if (objectNameAsString == "redButton1")
             {
                 rejillas.SetActive(false);
+            }
+            else 
+            {
+                rejillas.SetActive(true);            
             }
         }
 
@@ -211,3 +205,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
+
