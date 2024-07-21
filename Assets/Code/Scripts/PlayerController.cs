@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public GameObject cubeClone;
     public GameObject puddleClone;
     public GameObject spawn;
-    public GameObject rejillas;
     public GameObject finjuego;
     [SerializeField] private PassLevel passLevel;
     [SerializeField] private Dialogue dialogue;
@@ -18,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private CharacterController cc;
     private SkinnedMeshRenderer skinnedMeshRenderer;
     private Material blopMaterial;
-    private float originalPuddleValue = 0f;
     private float targetPuddleValue = 100f;
 
     // Parámetros de movimiento
@@ -40,13 +38,16 @@ public class PlayerController : MonoBehaviour
     private float jumpGravityReduction = 0.6f;
     private bool isJumping = false;
     private bool canJump = false;
+    private bool enableGravity = true;
     private Vector3 moveDirection = Vector3.zero;
     private Vector3 movement = Vector3.zero;
     private Vector3 lastMoveDirection = Vector3.zero;
     private Vector3 jumpDirection = Vector3.zero;
     private Vector3 jumpVector = Vector3.zero;
 
-    private Coroutine changingShapeKeyCoroutine;
+    private Coroutine storedChangeToNormalShapeKeyCoroutine = null;
+    private Coroutine storedChangeToPuddleShapeKeyCoroutine = null;
+    private bool stopShapeKeyCoroutine = false;
     // Sistema de clones
     public Queue<GameObject> cloneQueue = new Queue<GameObject>();
 
@@ -63,7 +64,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(ChangeTextureOffsetIndefinitely(new Vector2(0.05f, 0.02f)));
     }
 
-    void Update()
+    private void Update()
     {
         CheckGrounded();
         HandleInput();
@@ -78,34 +79,36 @@ public class PlayerController : MonoBehaviour
         wasGrounded = grounded;
 
         grounded = Physics.Raycast(transform.position, Vector3.down, 0.6f, jumpableMask) || 
-                   Physics.Raycast(new Vector3(transform.position.x + 0.75f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) ||
-                   Physics.Raycast(new Vector3(transform.position.x - 0.75f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) || 
-                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.75f), Vector3.down, 0.6f, jumpableMask) ||
-                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.75f), Vector3.down, 0.6f, jumpableMask);
+                   Physics.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) ||
+                   Physics.Raycast(new Vector3(transform.position.x - 0.6f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) || 
+                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.6f), Vector3.down, 0.6f, jumpableMask) ||
+                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.6f), Vector3.down, 0.6f, jumpableMask);
 
-        if (grounded && wasGrounded)
+        if (grounded && enableGravity)
         {
             jumpVector.y = 0;
         }
 
 
-        if (grounded)
+        if (grounded && !wasGrounded)
         {
+            enableGravity = true;
             AudioManager.Instance.PlayFall();
             // if (changingShapeKeyCoroutine != null){
             //     StopCoroutine(changingShapeKeyCoroutine);
             //     changingShapeKeyCoroutine = null;
             // }
-            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(targetPuddleValue, 0.2f));
+            if (storedChangeToNormalShapeKeyCoroutine != null)
+            {
+                StopCoroutine(storedChangeToNormalShapeKeyCoroutine);
+                storedChangeToNormalShapeKeyCoroutine = null;
+            }
+            storedChangeToPuddleShapeKeyCoroutine = StartCoroutine(ChangeToPuddleShapeKey(targetPuddleValue, 0.2f));
         }
         else if (!grounded && wasGrounded)
         {
-            // if (changingShapeKeyCoroutine != null){
-            //     StopCoroutine(changingShapeKeyCoroutine);
-            //     changingShapeKeyCoroutine = null;
-            // }
             // Inicia la coroutine para cambiar la ShapeKey "Puddle" cuando el personaje está cayendo
-            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(originalPuddleValue, 0.3f));
+            storedChangeToNormalShapeKeyCoroutine = StartCoroutine(ChangeToNormalShapeKey(0.5f));
         }
     }
 
@@ -133,7 +136,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // Move torwards the new direction
-        moveDirection = Vector3.Lerp(moveDirection, newMoveDirection, acceleration * Time.deltaTime);
+        if (newMoveDirection.sqrMagnitude > moveDirection.sqrMagnitude) {
+            moveDirection = Vector3.Lerp(moveDirection, newMoveDirection, acceleration * Time.deltaTime);
+        } else {
+            moveDirection = Vector3.Lerp(moveDirection, newMoveDirection, deceleration * Time.deltaTime);
+        }
 
         // Rotación
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
@@ -148,18 +155,14 @@ public class PlayerController : MonoBehaviour
         // Salto
         if ((Input.GetKeyDown(KeyCode.Space)))
         {
-            // Start corroutine to set canJump to false after 0.2 seconds
+            // Can jump for 0.2 seconds
             StartCoroutine(SetCanJumpToFalse(0.2f));
         }
         isJumping = !grounded;
-        if (canJump && grounded)
-        {
-            // if (changingShapeKeyCoroutine != null){
-            //     StopCoroutine(changingShapeKeyCoroutine);
-            //     changingShapeKeyCoroutine = null;
-            // }
-            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(originalPuddleValue, 0.3f));
+        if (canJump && !isJumping) 
+        {   
             StartCoroutine(Jump());
+            storedChangeToNormalShapeKeyCoroutine = StartCoroutine(ChangeToNormalShapeKey(0.5f));
         }
         // Comprobar si se mantiene presionada la tecla de salto
 
@@ -221,12 +224,15 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator Jump()
     {   
+        enableGravity = false;
+        canJump = false;
         // wait 0.1 seconds before allowing the next jump
         yield return new WaitForSeconds(0.1f);
-        grounded = false;
         AudioManager.Instance.PlayJumpPlastic();
         jumpVector.y = jumpForce;
         jumpDirection = lastMoveDirection;
+        yield return null;
+
     }
 
     void CheckWaterCollision()
@@ -234,17 +240,16 @@ public class PlayerController : MonoBehaviour
         LayerMask waterMask = LayerMask.GetMask("Water");
         if (Physics.Raycast(transform.position, Vector3.down, 0.9f, waterMask))
         {
-            AudioManager.Instance.PlayDamage();
             // add damage
             damage += 1;
-            print(damage);
             bonusSpeed = 0.5f;
-            if (damage >= 40) Respawn(1);
+            if (Mathf.RoundToInt(damage) % 10 == 0) AudioManager.Instance.PlayDamage();
+            if (damage >= 30) Respawn(1);
         }
         else {
             bonusSpeed = 1f;
             // reduce damage
-            if (damage > 0) damage -= 2;
+            if (damage > 0) damage -= 0.2f;
             else damage = 0;
         }
     }
@@ -309,8 +314,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Collided with " + other.gameObject.name);
         if (other.gameObject.CompareTag("Finish"))
         {
+            print("Finish");
             passLevel.FinishLevel();
         }
 
@@ -327,17 +334,12 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator SetCanJumpToFalse(float time)
     {
-        // Cambia la variable canJump a false
         canJump = true;
-
-        // Espera 0.2 segundos
         yield return new WaitForSeconds(time);
-
-        // Cambia la variable canJump a true (o cualquier otra lógica que necesites)
         canJump = false;
     }
 
-    private IEnumerator ChangeShapeKey(float targetValue, float duration)
+    private IEnumerator ChangeToPuddleShapeKey(float targetValue, float duration)
     {
         float startValue = skinnedMeshRenderer.GetBlendShapeWeight(0); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
         float time = 0f;
@@ -350,6 +352,19 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         //skinnedMeshRenderer.SetBlendShapeWeight(0, targetValue); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+    }
+    private IEnumerator ChangeToNormalShapeKey(float duration)
+    {
+        float startValue = skinnedMeshRenderer.GetBlendShapeWeight(0); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+        float time = 0f;
+
+        while (time < duration)
+        {
+            float value = Mathf.Lerp(startValue, 0, time / duration);
+            skinnedMeshRenderer.SetBlendShapeWeight(0, value); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+            time += Time.deltaTime;
+            yield return null;
+        }
     }
     private IEnumerator ChangeTextureOffsetIndefinitely(Vector2 changeRate)
     {

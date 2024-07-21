@@ -440,16 +440,15 @@ MonoBehaviour:
   cubeClone: {fileID: 7203378255063131881, guid: 33d05e00351448e45b51271f4d6bd279, type: 3}
   puddleClone: {fileID: 7203378255063131881, guid: 8b289beebb6306d41b01da361e406de1, type: 3}
   spawn: {fileID: 0}
-  rejillas: {fileID: 0}
   finjuego: {fileID: 0}
   passLevel: {fileID: 0}
   dialogue: {fileID: 0}
-  maxSpeed: 12
-  acceleration: 10
-  deceleration: 1000
+  maxSpeed: 10
+  acceleration: 15
+  deceleration: 5
   speedRotation: 120
   gravity: 40
-  jumpForce: 15
+  jumpForce: 20
 --- !u!136 &5876590705442386480
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -469,10 +468,10 @@ CapsuleCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
-  m_Height: 1.4
+  m_Radius: 0.44
+  m_Height: 1.6
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7, z: 0}
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!143 &4923162376931367697
 CharacterController:
   m_ObjectHideFlags: 0
@@ -492,13 +491,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.4
-  m_Radius: 0.7
-  m_SlopeLimit: 0.6
-  m_StepOffset: 0.6
+  m_Height: 1.6
+  m_Radius: 0.44
+  m_SlopeLimit: 0.1
+  m_StepOffset: 0.5
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.0001
-  m_Center: {x: 0, y: 0.7, z: 0}
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!4 &6536793552581289395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
