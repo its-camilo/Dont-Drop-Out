@@ -11,7 +11,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private AudioSource dialogueBlop, dialogueHuesos;
     [SerializeField] private GameObject blop, huesos;
 
-    private float typingTime = 0.2f;
+    private float typingTime = 0.005f;
     private int lineIndex;
     void Start()
     {
