@@ -76,7 +76,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -146,7 +146,7 @@ TrailRenderer:
   m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
-  m_ApplyActiveColorSpace: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1 &4034573411628256025
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,6 +309,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -348,6 +360,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_DirtyAABB
       value: 0
@@ -375,6 +391,10 @@ PrefabInstance:
     - target: {fileID: -3887185075125053422, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_AABB.m_Extent.z
       value: 0.9098804
+      objectReference: {fileID: 0}
+    - target: {fileID: -3887185075125053422, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}
       propertyPath: m_Name
@@ -417,9 +437,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3101b3bdb5fc4148a9a6dabaea5b803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clone: {fileID: 7203378255063131881, guid: 33d05e00351448e45b51271f4d6bd279, type: 3}
+  cubeClone: {fileID: 7203378255063131881, guid: 33d05e00351448e45b51271f4d6bd279, type: 3}
+  puddleClone: {fileID: 7203378255063131881, guid: 8b289beebb6306d41b01da361e406de1, type: 3}
   spawn: {fileID: 0}
+  rejillas: {fileID: 0}
+  finjuego: {fileID: 0}
   passLevel: {fileID: 0}
+  dialogue: {fileID: 0}
+  maxSpeed: 12
+  acceleration: 10
+  deceleration: 1000
+  speedRotation: 120
+  gravity: 40
+  jumpForce: 15
 --- !u!136 &5876590705442386480
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -442,7 +472,7 @@ CapsuleCollider:
   m_Radius: 0.7
   m_Height: 1.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!143 &4923162376931367697
 CharacterController:
   m_ObjectHideFlags: 0
@@ -468,7 +498,7 @@ CharacterController:
   m_StepOffset: 0.6
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.0001
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!4 &6536793552581289395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 225e5c73bcc3f434ebc8fe01f7e4fc57, type: 3}

@@ -1,80 +1,169 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.VFX;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.SceneManagement;
-using System.Data.SqlTypes;
 
 public class PlayerController : MonoBehaviour
 {
-    public Queue<GameObject> cloneQueue = new Queue<GameObject>();
+    // Referencias a objetos
     public GameObject cubeClone;
     public GameObject puddleClone;
     public GameObject spawn;
     public GameObject rejillas;
-    bool grounded;
-    float speedMovement = 12f;
-    float speedRotation = 110f;
-    float gravity = 40f;
-    float jumpForce = 20f;
-    Vector3 jumpVector = Vector3.zero;
-    CharacterController cc;
-    bool wasGrounded;
+    public GameObject finjuego;
     [SerializeField] private PassLevel passLevel;
     [SerializeField] private Dialogue dialogue;
+
+    // Componentes
+    private CharacterController cc;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+    private Material blopMaterial;
+    private float originalPuddleValue = 0f;
+    private float targetPuddleValue = 100f;
+
+    // Parámetros de movimiento
+    public float maxSpeed = 12f;
+    public float acceleration = 30f;
+    public float deceleration = 30f;
+    public float speedRotation = 120f;
+    public float gravity = 40f;
+    public float jumpForce = 20f;
+
+    // Variables de estado
+    private bool grounded;
+    private bool wasGrounded;
     private bool inButton;
-    public GameObject finjuego;
+    private float damage = 0f;
+    private float currentSpeed = 0f;
+    private float bonusSpeed = 1f;
+    private float airControlFactor = 0.8f;
+    private float jumpGravityReduction = 0.6f;
+    private bool isJumping = false;
+    private bool canJump = false;
+    private Vector3 moveDirection = Vector3.zero;
+    private Vector3 movement = Vector3.zero;
+    private Vector3 lastMoveDirection = Vector3.zero;
+    private Vector3 jumpDirection = Vector3.zero;
+    private Vector3 jumpVector = Vector3.zero;
+
+    private Coroutine changingShapeKeyCoroutine;
+    // Sistema de clones
+    public Queue<GameObject> cloneQueue = new Queue<GameObject>();
 
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
-        spawn = GameObject.Find("Spawn");
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        blopMaterial = skinnedMeshRenderer.materials[0];
     }
 
     private void Start()
     {
-        transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+        ResetPosition();
+        StartCoroutine(ChangeTextureOffsetIndefinitely(new Vector2(0.05f, 0.02f)));
     }
 
     void Update()
     {
+        CheckGrounded();
+        HandleInput();
+        ApplyMovement();
+        CheckWaterCollision();
+        CheckCheckpoint();
+    }
+
+    void CheckGrounded()
+    {
         LayerMask jumpableMask = LayerMask.GetMask("Jumpable", "checkpoint");
-        LayerMask checkpointMask = LayerMask.GetMask("checkpoint");
-        LayerMask waterMask = LayerMask.GetMask("Water");
         wasGrounded = grounded;
 
-        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, waterMask))
-        {
-            AudioManager.Instance.PlayDamage();
-            Respawn(1);
-        }
+        grounded = Physics.Raycast(transform.position, Vector3.down, 0.6f, jumpableMask) || 
+                   Physics.Raycast(new Vector3(transform.position.x + 0.75f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) ||
+                   Physics.Raycast(new Vector3(transform.position.x - 0.75f, transform.position.y, transform.position.z), Vector3.down, 0.6f, jumpableMask) || 
+                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.75f), Vector3.down, 0.6f, jumpableMask) ||
+                   Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.75f), Vector3.down, 0.6f, jumpableMask);
 
-        if (Physics.Raycast(transform.position, Vector3.down, 0.35f, jumpableMask) || 
-            Physics.Raycast(new Vector3(transform.position.x + 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.35f, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x - 0.65f, transform.position.y, transform.position.z), Vector3.down, 0.35f, jumpableMask) || 
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.65f), Vector3.down, 0.35f, jumpableMask) ||
-            Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.65f), Vector3.down, 0.35f, jumpableMask) )
+        if (grounded && wasGrounded)
         {
             jumpVector.y = 0;
-            grounded = true;
-        }
-        else
-        {
-            grounded=false;
         }
 
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.9f, checkpointMask))
-        {
-            spawn.transform.SetPositionAndRotation(new Vector3(hit.transform.position.x, hit.transform.position.y + 2f, hit.transform.position.z), hit.transform.rotation);
-        }
 
-        if (grounded && !wasGrounded)
+        if (grounded)
         {
             AudioManager.Instance.PlayFall();
+            // if (changingShapeKeyCoroutine != null){
+            //     StopCoroutine(changingShapeKeyCoroutine);
+            //     changingShapeKeyCoroutine = null;
+            // }
+            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(targetPuddleValue, 0.2f));
+        }
+        else if (!grounded && wasGrounded)
+        {
+            // if (changingShapeKeyCoroutine != null){
+            //     StopCoroutine(changingShapeKeyCoroutine);
+            //     changingShapeKeyCoroutine = null;
+            // }
+            // Inicia la coroutine para cambiar la ShapeKey "Puddle" cuando el personaje está cayendo
+            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(originalPuddleValue, 0.3f));
+        }
+    }
+
+    void HandleInput()
+    {
+         // Movimiento
+        Vector3 newMoveDirection = Vector3.zero;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            newMoveDirection += transform.forward;
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            newMoveDirection -= transform.forward;
         }
 
+        if (newMoveDirection != Vector3.zero)
+        {
+            newMoveDirection.Normalize();
+            if (grounded)
+            {
+                lastMoveDirection = newMoveDirection;
+                jumpDirection = newMoveDirection;
+            }
+        }
+
+        // Move torwards the new direction
+        moveDirection = Vector3.Lerp(moveDirection, newMoveDirection, acceleration * Time.deltaTime);
+
+        // Rotación
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Rotate(speedRotation * Time.deltaTime * Vector3.up);
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Rotate(speedRotation * Time.deltaTime * Vector3.down);
+        }
+
+        // Salto
+        if ((Input.GetKeyDown(KeyCode.Space)))
+        {
+            // Start corroutine to set canJump to false after 0.2 seconds
+            StartCoroutine(SetCanJumpToFalse(0.2f));
+        }
+        isJumping = !grounded;
+        if (canJump && grounded)
+        {
+            // if (changingShapeKeyCoroutine != null){
+            //     StopCoroutine(changingShapeKeyCoroutine);
+            //     changingShapeKeyCoroutine = null;
+            // }
+            changingShapeKeyCoroutine = StartCoroutine(ChangeShapeKey(originalPuddleValue, 0.3f));
+            StartCoroutine(Jump());
+        }
+        // Comprobar si se mantiene presionada la tecla de salto
+
+        // Clonación y respawn
         if (Input.GetKeyDown(KeyCode.Q)) 
         {
             AudioManager.Instance.PlayClone();
@@ -90,34 +179,83 @@ public class PlayerController : MonoBehaviour
             AudioManager.Instance.PlayUnclone();
             Respawn(4);
         }
+    }
 
-        if (Input.GetKey(KeyCode.W))
+    void ApplyMovement()
+    {
+         // Aceleración/desaceleración en función de la 
+        if (moveDirection.magnitude > 0)
         {
-            cc.Move(speedMovement * Time.deltaTime * transform.forward);
+            currentSpeed = Mathf.MoveTowards(currentSpeed,  maxSpeed, acceleration * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.S))
+        else
         {
-            cc.Move(- speedMovement * Time.deltaTime * transform.forward);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, 0, deceleration * Time.deltaTime);
         }
-
-        if (Input.GetKey(KeyCode.D))
+        
+        // Calcular el factor de control
+        float controlFactor = 1f;
+        if (!grounded)
         {
-            transform.Rotate(speedRotation * Time.deltaTime * Vector3.up);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Rotate(speedRotation * Time.deltaTime * Vector3.down);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && grounded is true)
-        {
-            grounded = false;
-            jumpVector.y = jumpForce;
-            AudioManager.Instance.PlayJumpPlastic();
+            // Si está en el aire y la dirección de movimiento es diferente a la dirección del salto
+            if (Vector3.Dot(moveDirection, jumpDirection) < 0.99f)
+            {
+                controlFactor = airControlFactor;
+            }
         }
 
-        jumpVector.y -= gravity * Time.deltaTime;
-        cc.Move(jumpVector * Time.deltaTime);
+        // Movimiento horizontal
+        movement = moveDirection * currentSpeed * controlFactor * bonusSpeed * Time.deltaTime;
+        // Gravedad
+        float currentGravity = gravity;
+        if (!grounded && jumpVector.y < 0 && Input.GetKey(KeyCode.Space))
+        {
+            currentGravity *= jumpGravityReduction;
+        }
+        jumpVector.y -= currentGravity * Time.deltaTime;
+        movement += jumpVector * Time.deltaTime;
+
+        // Aplicar movimiento
+        cc.Move(movement);
+    }
+
+    private IEnumerator Jump()
+    {   
+        // wait 0.1 seconds before allowing the next jump
+        yield return new WaitForSeconds(0.1f);
+        grounded = false;
+        AudioManager.Instance.PlayJumpPlastic();
+        jumpVector.y = jumpForce;
+        jumpDirection = lastMoveDirection;
+    }
+
+    void CheckWaterCollision()
+    {
+        LayerMask waterMask = LayerMask.GetMask("Water");
+        if (Physics.Raycast(transform.position, Vector3.down, 0.9f, waterMask))
+        {
+            AudioManager.Instance.PlayDamage();
+            // add damage
+            damage += 1;
+            print(damage);
+            bonusSpeed = 0.5f;
+            if (damage >= 40) Respawn(1);
+        }
+        else {
+            bonusSpeed = 1f;
+            // reduce damage
+            if (damage > 0) damage -= 2;
+            else damage = 0;
+        }
+    }
+
+    void CheckCheckpoint()
+    {
+        LayerMask checkpointMask = LayerMask.GetMask("checkpoint");
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 0.9f, checkpointMask))
+        {
+            spawn.transform.SetPositionAndRotation(new Vector3(hit.transform.position.x, hit.transform.position.y + 2f, hit.transform.position.z), hit.transform.rotation);
+        }
     }
 
     void Respawn(int typeRespawn)
@@ -126,66 +264,99 @@ public class PlayerController : MonoBehaviour
         switch (typeRespawn)
         {
             case 1:
-                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-            break;
-
-            case 2:
-                if (cloneQueue.Count < 10)
-                {
-                    cloneQueue.Enqueue(Instantiate(cubeClone, transform.position, Quaternion.identity));
-                }
-                else
-                {
-                    Destroy(cloneQueue.Dequeue());
-                    cloneQueue.Enqueue(Instantiate(cubeClone, transform.position, Quaternion.identity));
-                }
-                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-            break;
-
-            case 3:
-                if (cloneQueue.Count < 10)
-                {
-                    cloneQueue.Enqueue(Instantiate(puddleClone, transform.position, Quaternion.identity));
-                }
-                else
-                {
-                    Destroy(cloneQueue.Dequeue());
-                    cloneQueue.Enqueue(Instantiate(puddleClone, transform.position, Quaternion.identity));
-                }
-                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+                ResetPosition();
                 break;
-
+            case 2:
+                CloneAndRespawn(cubeClone);
+                break;
+            case 3:
+                CloneAndRespawn(puddleClone);
+                break;
             case 4:
-                while (cloneQueue.Count > 0)
-                {
-                    Destroy(cloneQueue.Dequeue());
-                }
-                transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
-            break;
+                ClearClones();
+                ResetPosition();
+                break;
         }
         cc.enabled = true;
     }
 
+    void CloneAndRespawn(GameObject cloneType)
+    {
+        if (cloneQueue.Count < 10)
+        {
+            cloneQueue.Enqueue(Instantiate(cloneType, transform.position, Quaternion.identity));
+        }
+        else
+        {
+            Destroy(cloneQueue.Dequeue());
+            cloneQueue.Enqueue(Instantiate(cloneType, transform.position, Quaternion.identity));
+        }
+        ResetPosition();
+    }
+
+    void ClearClones()
+    {
+        while (cloneQueue.Count > 0)
+        {
+            Destroy(cloneQueue.Dequeue());
+        }
+    }
+
+    void ResetPosition()
+    {
+        transform.SetPositionAndRotation(spawn.transform.position, spawn.transform.rotation);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag is "Finish")
+        if (other.gameObject.CompareTag("Finish"))
         {
             passLevel.FinishLevel();
         }
 
-        if (other.gameObject.tag is "FinJuego" && SceneManager.GetActiveScene().name == "Level2")
+        if (other.gameObject.CompareTag("FinJuego") && SceneManager.GetActiveScene().name == "Level2")
         {
             finjuego.SetActive(true);
         }
-        if (SceneManager.GetActiveScene().name == "Level3")
+
+        if (SceneManager.GetActiveScene().name == "Level3" && other.gameObject.name == "redButton1")
         {
-            string objectNameAsString = other.gameObject.name;
-            if (objectNameAsString == "redButton1")
-            {
-                inButton = true;
-            }
+            inButton = true;
+        }
+    }
+
+    private IEnumerator SetCanJumpToFalse(float time)
+    {
+        // Cambia la variable canJump a false
+        canJump = true;
+
+        // Espera 0.2 segundos
+        yield return new WaitForSeconds(time);
+
+        // Cambia la variable canJump a true (o cualquier otra lógica que necesites)
+        canJump = false;
+    }
+
+    private IEnumerator ChangeShapeKey(float targetValue, float duration)
+    {
+        float startValue = skinnedMeshRenderer.GetBlendShapeWeight(0); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+        float time = 0f;
+
+        while (time < duration)
+        {
+            float value = Mathf.Lerp(startValue, targetValue, time / duration);
+            skinnedMeshRenderer.SetBlendShapeWeight(0, value); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+            time += Time.deltaTime;
+            yield return null;
+        }
+        //skinnedMeshRenderer.SetBlendShapeWeight(0, targetValue); // Suponiendo que el índice de la ShapeKey "Puddle" es 0
+    }
+    private IEnumerator ChangeTextureOffsetIndefinitely(Vector2 changeRate)
+    {
+        while (true)
+        {
+            blopMaterial.mainTextureOffset += changeRate * Time.deltaTime;
+            yield return null;
         }
     }
 }
-
-
