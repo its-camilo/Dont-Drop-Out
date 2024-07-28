@@ -1166,6 +1166,38 @@ MonoBehaviour:
   dialogueHuesos: {fileID: 1038977875}
   blop: {fileID: 1940324639}
   huesos: {fileID: 1314468568}
+--- !u!1 &800837130 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8862402771451024995, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
+  m_PrefabInstance: {fileID: 1530521436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &800837135
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800837130}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &890955485
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,6 +2964,10 @@ PrefabInstance:
       propertyPath: m_Convex
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3097606943630805734, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3433846119481085927, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -3101,6 +3137,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6056618728646528641, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 156403120}
+    - targetCorrespondingSourceObject: {fileID: 8862402771451024995, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 800837135}
   m_SourcePrefab: {fileID: 100100000, guid: fabb1b276256f808598b300894d0a5b8, type: 3}
 --- !u!4 &1530521437 stripped
 Transform:
@@ -3991,17 +4030,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 899597851}
     - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
-      propertyPath: maxSpeed
-      value: 10
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 744314425}
+    - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
+      propertyPath: finjuego
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
-      propertyPath: acceleration
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6182366332361077958, guid: e06e4685399870715a255bba0873f661, type: 3}
-      propertyPath: deceleration
-      value: 5
-      objectReference: {fileID: 0}
+      propertyPath: passLevel
+      value: 
+      objectReference: {fileID: 249550475}
     - target: {fileID: 6536793552581289395, guid: e06e4685399870715a255bba0873f661, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.492884

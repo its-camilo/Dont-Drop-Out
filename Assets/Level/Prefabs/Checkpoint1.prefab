@@ -9,18 +9,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.202063
       objectReference: {fileID: 0}
@@ -60,17 +48,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
       propertyPath: m_Name
       value: Checkpoint1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78,14 +58,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5182747077033992457}
+      addedObject: {fileID: 4449064788244391003}
   m_SourcePrefab: {fileID: 100100000, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
 --- !u!1 &1724223649930378636 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 97f1c7c6634533a5ab267cb6c1de9f1f, type: 3}
   m_PrefabInstance: {fileID: 1958157193876357341}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5182747077033992457
+--- !u!64 &4449064788244391003
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
